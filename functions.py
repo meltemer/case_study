@@ -27,13 +27,7 @@ s3_client = boto3.client(
     aws_secret_access_key=AWS_SECRET_KEY,
 )
 
-conn = psycopg2.connect(
-        dbname=REDSHIFT_DB,
-        user=REDSHIFT_USER,
-        password=REDSHIFT_PASSWORD,
-        host=REDSHIFT_HOST
-    )
-cur = conn.cursor()
+
 
 
 def upload_to_s3(local_folder, bucket_name):
@@ -46,7 +40,15 @@ def upload_to_s3(local_folder, bucket_name):
             print(f"Uploaded {file_name} to s3://{bucket_name}/{s3_key}")
 
 
-def create_tables(cur):
+def create_tables():
+    conn = psycopg2.connect(
+        dbname=REDSHIFT_DB,
+        user=REDSHIFT_USER,
+        password=REDSHIFT_PASSWORD,
+        host=REDSHIFT_HOST
+    )
+    cur = conn.cursor()
+
     table_queries = [
         """
         CREATE TABLE IF NOT EXISTS customers (
@@ -148,8 +150,14 @@ def create_tables(cur):
     print("Tables created successfully!")
 
 
-def load_data(cur):
-
+def load_data():
+    conn = psycopg2.connect(
+        dbname=REDSHIFT_DB,
+        user=REDSHIFT_USER,
+        password=REDSHIFT_PASSWORD,
+        host=REDSHIFT_HOST
+    )
+    cur = conn.cursor()
 
     load_queries = [
         f"""
