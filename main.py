@@ -1,6 +1,5 @@
-from functions import upload_to_s3
+from functions import upload_to_s3,create_tables,load_data
 import json
-#if __name__ == "__main__":
 
 CREDENTIALS_FILE = "credentials.json"
 
@@ -10,4 +9,12 @@ with open(CREDENTIALS_FILE, "r") as file:
 BUCKET_NAME = credentials["s3_bucket"]
 LOCAL_CSV_FOLDER = credentials["local_csv_folder"]
 
-upload_to_s3(LOCAL_CSV_FOLDER, BUCKET_NAME)
+if __name__ == "__main__":
+
+    upload_to_s3(LOCAL_CSV_FOLDER, BUCKET_NAME)
+
+    create_tables()
+
+    load_data()
+
+    print('process completed successfully')
